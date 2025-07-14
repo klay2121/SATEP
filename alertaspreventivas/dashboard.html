@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login - Alertas Preventivas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    body {
+      display: flex;
+      height: 100vh;
+      background: linear-gradient(to right, #e0f7fa, #ffffff);
+    }
+    .left {
+      flex: 1;
+      background: linear-gradient(135deg, #00a9a5, #00796b);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+    }
+    .left img {
+      width: 90%;
+      max-width: 400px;
+      animation: float 4s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .right {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #ffffff;
+      padding: 40px;
+    }
+    .form-box {
+      width: 100%;
+      max-width: 400px;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 15px 25px rgba(0,0,0,0.1);
+      background-color: #fff;
+      text-align: center;
+    }
+    .form-box img {
+      width: 100px;
+      margin-bottom: 20px;
+    }
+    .form-box h2 {
+      margin-bottom: 25px;
+      font-size: 26px;
+      color: #333;
+    }
+    .input-group {
+      margin-bottom: 20px;
+      position: relative;
+      text-align: left;
+    }
+    .input-group label {
+      font-weight: 600;
+      margin-bottom: 6px;
+      display: block;
+      color: #555;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 12px 14px;
+      padding-right: 100px;
+      border: 1.5px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+      transition: 0.3s;
+    }
+    .input-group input:focus {
+      border-color: #00a9a5;
+      outline: none;
+    }
+    .suffix, .toggle-password {
+      position: absolute;
+      top: 38px;
+      font-size: 13px;
+      color: #888;
+      user-select: none;
+    }
+    .suffix {
+      right: 15px;
+    }
+    .toggle-password {
+      right: 45px;
+      cursor: pointer;
+    }
+    .forgot {
+      text-align: right;
+      margin-bottom: 20px;
+    }
+    .forgot a {
+      color: #00a9a5;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 14px;
+    }
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+    .btn.primary {
+      background: #00a9a5;
+      color: white;
+      box-shadow: 0 4px 12px rgba(0, 169, 165, 0.3);
+    }
+    .btn.secondary {
+      background: #f2f2f2;
+      color: #333;
+    }
+    .btn.secondary:hover {
+      background: #e6e6e6;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+    .modal.active {
+      display: flex;
+    }
+    .modal-content {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 420px;
+      width: 90%;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+    .modal-content h3 {
+      margin-bottom: 20px;
+      text-align: center;
+      color: #333;
+    }
+    .recovery-code {
+      background: #e0f7fa;
+      color: #00796b;
+      padding: 10px;
+      text-align: center;
+      border-radius: 6px;
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+    .error-message {
+      color: #e74c3c;
+      font-size: 13px;
+      margin-top: 5px;
+      display: none;
+    }
+    .success-message {
+      color: #2ecc71;
+      font-size: 13px;
+      margin-top: 10px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="left">
+    <img src="https://cdn-icons-gif.flaticon.com/15164/15164857.gif" alt="Estudiantes aprendiendo" />
+  </div>
+  <div class="right">
+    <div class="form-box">
+      <img src="https://cdn-icons-png.flaticon.com/512/6681/6681204.png" alt="Icono escuela" />
+      <h2>Login as School</h2>
+      <div class="input-group">
+        <label for="email">Usuario</label>
+        <input type="text" id="email" placeholder="usuario" />
+        <span class="suffix">@alertaspreventivas</span>
+        <div class="error-message" id="email-error"></div>
+      </div>
+      <div class="input-group">
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" placeholder="********" />
+        <span class="toggle-password" onclick="togglePassword()"> 👁️ </span>
+        <div class="error-message" id="password-error"></div>
+      </div>
+      <div class="forgot">
+        <a onclick="showRecoveryModal()">¿Olvidaste tu contraseña?</a>
+      </div>
+      <button class="btn primary" onclick="login()">INGRESAR</button>
+      <button class="btn secondary" onclick="showRegisterModal()">CREAR USUARIO</button>
+    </div>
+  </div>
+
+  <!-- Modal de Registro -->
+  <div class="modal" id="registerModal">
+    <div class="modal-content">
+      <h3>Crear Nueva Cuenta</h3>
+      <div class="input-group">
+        <label for="regEmail">Email</label>
+        <input type="text" id="regEmail" placeholder="usuario" />
+        <span class="suffix">@alertaspreventivas</span>
+        <div class="error-message" id="reg-email-error"></div>
+      </div>
+      <div class="input-group">
+        <label for="regPassword">Password</label>
+        <input type="password" id="regPassword" placeholder="Mínimo 8 caracteres" />
+        <div class="error-message" id="reg-password-error"></div>
+      </div>
+      <div class="input-group">
+        <label for="regConfirmPassword">Confirm Password</label>
+        <input type="password" id="regConfirmPassword" placeholder="Repite tu contraseña" />
+        <div class="error-message" id="reg-confirm-error"></div>
+      </div>
+      <div class="success-message" id="reg-success"></div>
+      <button class="btn primary" onclick="createUser()">REGISTER</button>
+      <button class="btn secondary" onclick="hideModal('registerModal')">CANCEL</button>
+    </div>
+  </div>
+
+  <!-- Modal Recuperación -->
+  <div class="modal" id="recoveryModal">
+    <div class="modal-content">
+      <h3>Recuperar Contraseña</h3>
+      <div class="input-group">
+        <label for="recoveryEmail">Email</label>
+        <input type="text" id="recoveryEmail" placeholder="usuario" />
+        <span class="suffix">@alertaspreventivas</span>
+        <div class="error-message" id="recovery-email-error"></div>
+      </div>
+      <div class="recovery-code" id="codigoMostrado" style="display:none;">
+        Código: <span id="codigoGenerado"></span>
+      </div>
+      <div class="input-group" id="codeField" style="display:none;">
+        <label for="codigo">Código de verificación</label>
+        <input type="text" id="codigo" placeholder="Ingresa el código" />
+        <div class="error-message" id="code-error"></div>
+      </div>
+      <div class="input-group" id="newPassField" style="display:none;">
+        <label for="newPass">Nueva contraseña</label>
+        <input type="password" id="newPass" placeholder="Nueva contraseña" />
+        <div class="error-message" id="newpass-error"></div>
+      </div>
+      <div class="input-group" id="repeatPassField" style="display:none;">
+        <label for="repeatPass">Confirmar contraseña</label>
+        <input type="password" id="repeatPass" placeholder="Repite la contraseña" />
+        <div class="error-message" id="repeatpass-error"></div>
+      </div>
+      <div class="success-message" id="recovery-success"></div>
+      <button class="btn primary" id="recoveryBtn" onclick="sendRecoveryCode()">ENVIAR CÓDIGO</button>
+      <button class="btn secondary" onclick="hideModal('recoveryModal')">CANCELAR</button>
+    </div>
+  </div>
+
+  <!-- Script funcional sin cambios -->
+  <script>
+    function togglePassword() {
+      const passInput = document.getElementById('password');
+      passInput.type = passInput.type === 'password' ? 'text' : 'password';
+    }
+
+    function showRegisterModal() {
+      document.getElementById('registerModal').classList.add('active');
+    }
+    function showRecoveryModal() {
+      document.getElementById('recoveryModal').classList.add('active');
+    }
+    function hideModal(id) {
+      document.getElementById(id).classList.remove('active');
+      resetModalFields(id);
+    }
+    function resetModalFields(id) {
+      if (id === 'registerModal') {
+        document.getElementById('regEmail').value = '';
+        document.getElementById('regPassword').value = '';
+        document.getElementById('regConfirmPassword').value = '';
+        ['reg-email-error','reg-password-error','reg-confirm-error','reg-success']
+          .forEach(e => document.getElementById(e).style.display = 'none');
+      }
+      if (id === 'recoveryModal') {
+        ['recoveryEmail','codigo','newPass','repeatPass'].forEach(idf => document.getElementById(idf).value = '');
+        ['recovery-email-error','code-error','newpass-error','repeatpass-error','recovery-success']
+          .forEach(e => document.getElementById(e).style.display = 'none');
+        ['codigoMostrado','codeField','newPassField','repeatPassField']
+          .forEach(e => document.getElementById(e).style.display = 'none');
+        const btn = document.getElementById('recoveryBtn');
+        btn.innerText = 'ENVIAR CÓDIGO';
+        btn.onclick = sendRecoveryCode;
+      }
+    }
+    function login() {
+      window.location.href = 'alertas.html';
+    }
+    function showError(id,msg){const e=document.getElementById(id);e.innerText=msg;e.style.display='block';}
+    function hideError(id){document.getElementById(id).style.display='none';}
+
+    function createUser() {
+      const email = document.getElementById('regEmail').value.trim();
+      const pass = document.getElementById('regPassword').value.trim();
+      const confirm = document.getElementById('regConfirmPassword').value.trim();
+      let valid=true;
+      if(!email){showError('reg-email-error','Ingresa un usuario.'); valid=false;} else hideError('reg-email-error');
+      if(!pass || pass.length<8){showError('reg-password-error','Contraseña mínimo 8 caracteres.'); valid=false;} else hideError('reg-password-error');
+      if(confirm!==pass){showError('reg-confirm-error','Las contraseñas no coinciden.'); valid=false;} else hideError('reg-confirm-error');
+      if(!valid)return;
+      document.getElementById('reg-success').innerText='Usuario creado con éxito!';
+      document.getElementById('reg-success').style.display='block';
+    }
+
+    let recoveryCode = '';
+    function sendRecoveryCode() {
+      const email = document.getElementById('recoveryEmail').value.trim();
+      if(!email){showError('recovery-email-error','Ingresa un usuario.'); return;} else hideError('recovery-email-error');
+      recoveryCode = Math.floor(100000+Math.random()*900000).toString();
+      document.getElementById('codigoGenerado').innerText = recoveryCode;
+      ['codigoMostrado','codeField','newPassField','repeatPassField']
+        .forEach(e => document.getElementById(e).style.display='block');
+      const btn = document.getElementById('recoveryBtn');
+      btn.innerText = 'RECUPERAR';
+      btn.onclick = verifyRecoveryCode;
+    }
+
+    function verifyRecoveryCode() {
+      const codeIn = document.getElementById('codigo').value.trim();
+      const newP = document.getElementById('newPass').value.trim();
+      const rpt = document.getElementById('repeatPass').value.trim();
+      let valid = true;
+      if(codeIn!==recoveryCode){showError('code-error','Código incorrecto.'); valid=false;} else hideError('code-error');
+      if(!newP||newP.length<8){showError('newpass-error','Contraseña mínimo 8 caracteres.'); valid=false;} else hideError('newpass-error');
+      if(rpt!==newP){showError('repeatpass-error','Las contraseñas no coinciden.'); valid=false;} else hideError('repeatpass-error');
+      if(!valid) return;
+      document.getElementById('recovery-success').innerText = 'Contraseña actualizada con éxito!';
+      document.getElementById('recovery-success').style.display='block';
+    }
+  </script>
+</body>
+</html>

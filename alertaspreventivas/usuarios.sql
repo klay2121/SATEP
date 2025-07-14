@@ -1,0 +1,10 @@
+CREATE DATABASE IF NOT EXISTS alertas CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+
+USE alertas;
+
+CREATE TABLE usuarios (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL
+);
+

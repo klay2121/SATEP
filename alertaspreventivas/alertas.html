@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Alertas de Deserción Estudiantil - Alertas Preventivas</title>
+  <style>
+    /* Reset básico */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #e0f7fa, #ffffff);
+      margin: 0;
+      padding: 30px 15px;
+      color: #333;
+    }
+    h1 {
+      color: #00796b;
+      text-align: center;
+      font-weight: 700;
+      font-size: 2.8rem;
+      margin-bottom: 40px;
+      letter-spacing: 1.2px;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+    }
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .btn-login {
+      display: inline-block;
+      background-color: #004d40;
+      color: white;
+      padding: 12px 22px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: none;
+      margin-bottom: 30px;
+      box-shadow: 0 5px 15px rgba(0,77,64,0.4);
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      user-select: none;
+    }
+    .btn-login:hover {
+      background-color: #00796b;
+      transform: scale(1.05);
+    }
+    .btn-login:active {
+      transform: scale(0.98);
+    }
+    .alerta-form, .alerta-list {
+      background: #fff;
+      padding: 30px 35px;
+      margin-bottom: 50px;
+      border-radius: 14px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      transition: box-shadow 0.3s ease;
+    }
+    .alerta-form:hover, .alerta-list:hover {
+      box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    }
+    .alerta-form h2, .alerta-list h2 {
+      font-weight: 700;
+      font-size: 1.8rem;
+      margin-bottom: 25px;
+      color: #004d40;
+      border-bottom: 3px solid #00a896;
+      padding-bottom: 8px;
+      letter-spacing: 0.8px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #00796b;
+      font-size: 1rem;
+      user-select: none;
+    }
+    input[type="text"], select, textarea {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2.5px solid #b2dfdb;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 400;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      resize: vertical;
+      color: #004d40;
+      background-color: #e0f2f1;
+      font-family: inherit;
+    }
+    input[type="text"]:focus, select:focus, textarea:focus {
+      border-color: #00796b;
+      box-shadow: 0 0 8px rgba(0,121,107,0.4);
+      outline: none;
+      background-color: #ffffff;
+    }
+    button {
+      width: 100%;
+      background-color: #00796b;
+      color: white;
+      padding: 15px 0;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 30px;
+      letter-spacing: 1.1px;
+      box-shadow: 0 5px 15px rgba(0,121,107,0.4);
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      user-select: none;
+    }
+    button:hover {
+      background-color: #004d40;
+      transform: scale(1.05);
+    }
+    button:active {
+      transform: scale(0.98);
+    }
+    .alerta-list {
+      padding-top: 20px;
+    }
+    .alerta-item {
+      background: #b2dfdb;
+      margin-bottom: 18px;
+      padding: 20px 25px;
+      border-radius: 12px;
+      box-shadow: inset 0 0 12px #004d40;
+      color: #004d40;
+      font-weight: 600;
+      line-height: 1.4;
+      transition: background-color 0.3s ease;
+    }
+    .alerta-item:hover {
+      background: #80cbc4;
+      box-shadow: inset 0 0 18px #00251a;
+    }
+    .alerta-item strong {
+      color: #00251a;
+    }
+    .alerta-item small {
+      display: block;
+      margin-top: 8px;
+      font-weight: 400;
+      font-size: 0.85rem;
+      color: #00332f;
+      font-style: italic;
+    }
+    .empty {
+      text-align: center;
+      color: #777;
+      font-style: italic;
+      margin-top: 25px;
+      font-size: 1.1rem;
+      user-select: none;
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 2rem;
+      }
+      .alerta-form, .alerta-list {
+        padding: 20px 20px;
+      }
+      button {
+        font-size: 1rem;
+        padding: 12px 0;
+      }
+      .btn-login {
+        padding: 10px 18px;
+        font-size: 0.9rem;
+        margin-bottom: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Alertas de Deserción Estudiantil</h1>
+
+  <div class="container">
+    <!-- Botón para regresar al login -->
+    <a href="dashboard.html" class="btn-login" title="Regresar a la página de login">← Regresar al login</a>
+
+    <div class="alerta-form">
+      <h2>Crear Nueva Alerta</h2>
+      <label for="estudiante">Nombre del estudiante</label>
+      <input type="text" id="estudiante" placeholder="Ej. Juan Pérez" />
+
+      <label for="grado">Grado / Curso</label>
+      <input type="text" id="grado" placeholder="Ej. 3er grado" />
+
+      <label for="razon">Razón de la alerta</label>
+      <select id="razon">
+        <option value="" disabled selected>Seleccione razón</option>
+        <option value="bajo_rendimiento">Bajo rendimiento académico</option>
+        <option value="falta_asistencia">Falta de asistencia</option>
+        <option value="problemas_personales">Problemas personales</option>
+        <option value="otros">Otros</option>
+      </select>
+
+      <label for="descripcion">Descripción detallada</label>
+      <textarea id="descripcion" rows="4" placeholder="Detalles adicionales..."></textarea>
+
+      <button onclick="crearAlerta()">Guardar Alerta</button>
+    </div>
+
+    <div class="alerta-list">
+      <h2>Alertas Registradas</h2>
+      <div id="listaAlertas" class="lista-alertas"></div>
+    </div>
+  </div>
+
+  <script>
+    let alertas = [];
+
+    function crearAlerta() {
+      const estudiante = document.getElementById('estudiante').value.trim();
+      const grado = document.getElementById('grado').value.trim();
+      const razon = document.getElementById('razon').value;
+      const descripcion = document.getElementById('descripcion').value.trim();
+
+      if (!estudiante || !grado || !razon) {
+        alert('Por favor, completa todos los campos obligatorios.');
+        return;
+      }
+
+      const alerta = {
+        id: Date.now(),
+        estudiante,
+        grado,
+        razon,
+        descripcion,
+        fecha: new Date().toLocaleString()
+      };
+
+      alertas.push(alerta);
+      limpiarFormulario();
+      mostrarAlertas();
+    }
+
+    function limpiarFormulario() {
+      document.getElementById('estudiante').value = '';
+      document.getElementById('grado').value = '';
+      document.getElementById('razon').value = '';
+      document.getElementById('descripcion').value = '';
+    }
+
+    function mostrarAlertas() {
+      const contenedor = document.getElementById('listaAlertas');
+      contenedor.innerHTML = '';
+
+      if (alertas.length === 0) {
+        contenedor.innerHTML = '<p class="empty">No hay alertas registradas.</p>';
+        return;
+      }
+
+      alertas.forEach(alerta => {
+        const div = document.createElement('div');
+        div.className = 'alerta-item';
+        div.innerHTML = `
+          <strong>Estudiante:</strong> ${alerta.estudiante} <br/>
+          <strong>Grado:</strong> ${alerta.grado} <br/>
+          <strong>Razón:</strong> ${formatearRazon(alerta.razon)} <br/>
+          <strong>Descripción:</strong> ${alerta.descripcion || 'N/A'} <br/>
+          <small><em>Registrada el: ${alerta.fecha}</em></small>
+        `;
+        contenedor.appendChild(div);
+      });
+    }
+
+    function formatearRazon(valor) {
+      switch(valor) {
+        case 'bajo_rendimiento': return 'Bajo rendimiento académico';
+        case 'falta_asistencia': return 'Falta de asistencia';
+        case 'problemas_personales': return 'Problemas personales';
+        case 'otros': return 'Otros';
+        default: return valor;
+      }
+    }
+
+    mostrarAlertas();
+  </script>
+
+</body>
+</html>
+
+</html>
